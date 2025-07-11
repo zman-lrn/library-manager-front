@@ -23,6 +23,7 @@ export default function MembersPage() {
 
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,7 +37,8 @@ export default function MembersPage() {
     fetchmembers();
   }, []);
   const filteredMembers = members.filter((member) =>
-    `${member.name} ${member.email} ${member.phone}`
+    [member.name, member.email, member.phone]
+      .join(" ")
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
@@ -148,23 +150,35 @@ export default function MembersPage() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 150)} // allows click to register before hiding
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
             placeholder="Search members by name, email, or phone..."
           />
         </div>
-        {filteredMembers.map((member) => (
-          <div
-            key={member.id}
-            onClick={() => {
-              setSelectedMember(member);
-              setShowViewModal(true);
-            }}
-            className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-          >
-            <p className="font-medium">{member.name}</p>
-            <p className="text-sm text-gray-500">{member.email}</p>
+        {isFocused && searchTerm.length > 0 && (
+          <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow mt-1 max-h-60 overflow-y-auto">
+            {filteredMembers.length > 0 ? (
+              filteredMembers.map((member) => (
+                <div
+                  key={member.id}
+                  onClick={() => {
+                    setSelectedMember(member);
+                    setShowViewModal(true);
+                    setIsFocused(false);
+                    setSearchTerm(""); // optional: clear after selection
+                  }}
+                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
+                >
+                  <p className="font-medium">{member.name}</p>
+                  <p className="text-sm text-gray-500">{member.email}</p>
+                </div>
+              ))
+            ) : (
+              <p className="p-2 text-sm text-gray-500">No matches found</p>
+            )}
           </div>
-        ))}
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {members.map((member) => (
@@ -205,19 +219,20 @@ export default function MembersPage() {
 
                 <div className="flex justify-end space-x-2 mt-4">
                   <button
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+                    className="inline-flex items-center justify-center gap-2 text-sm font-medium h-9 rounded-md px-3 border border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-900 transition"
                     onClick={() => {
                       setSelectedMember(member);
                       setShowViewModal(true);
                     }}
                   >
-                    <Eye className="h-4 w-4" />
+                    <Eye className="h-4 w-4 transition-colors duration-200 group-hover:text-gray-800" />
                   </button>
-                  <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+
+                  <button className="inline-flex items-center justify-center gap-2 text-sm font-medium h-9 rounded-md px-3 border border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-900 transition">
                     <History className="h-4 w-4" />
                   </button>
                   <button
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+                    className="inline-flex items-center justify-center gap-2 text-sm font-medium h-9 rounded-md px-3 border border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-900 transition"
                     onClick={() => {
                       setSelectedMember(member);
                       setNewMember(member);
@@ -227,7 +242,7 @@ export default function MembersPage() {
                     <SquarePen className="h-4 w-4" />
                   </button>
                   <button
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+                    className="inline-flex items-center justify-center gap-2 text-sm font-medium h-9 rounded-md px-3 border border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-900 transition"
                     onClick={() => {
                       setSelectedMember(member);
                       setShowDeleteModal(true);

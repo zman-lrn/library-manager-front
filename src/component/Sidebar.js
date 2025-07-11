@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -45,18 +45,24 @@ export default function Sidebar({ isOpen, onClose }) {
         <ul className="mt-4 space-y-2 px-4 list-none">
           {menuItems.map(({ label, icon: Icon, path }) => (
             <li key={label}>
-              <Link
+              <NavLink
                 to={path}
                 onClick={() => {
                   if (window.innerWidth < 768 && onClose) {
                     onClose();
                   }
                 }}
-                className="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 p-2 rounded-md transition"
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 p-2 rounded-md transition ${
+                    isActive
+                      ? "bg-blue-100 text-gray-900 font-semibold"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }
               >
                 <Icon className="w-5 h-5" />
                 <span>{label}</span>
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
