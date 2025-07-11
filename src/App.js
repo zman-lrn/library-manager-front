@@ -1,24 +1,92 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainLayout from "./component/MainLayout";
+import AdminDashboard from "./page/AdminDashboard";
+import Login from "./page/Login";
+import Books from "./component/books";
+import BorrowReturnPage from "./page/BorrowReturnPage";
+import MembersPage from "./page/MembersPage";
+import StaffPage from "./page/StaffPage";
+import Report from "./page/Report";
+import Genres from "./page/Genres";
+import Profile from "./page/Profile";
+import Signup from "./page/Signup";
+import PrivateRoute from "./component/PrivateRoute";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/books"
+            element={
+              <PrivateRoute>
+                <Books />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/borrow-return"
+            element={
+              <PrivateRoute>
+                <BorrowReturnPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/members"
+            element={
+              <PrivateRoute>
+                <MembersPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/staff"
+            element={
+              <PrivateRoute>
+                <StaffPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <PrivateRoute>
+                <Report />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/genres"
+            element={
+              <PrivateRoute>
+                <Genres />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </MainLayout>
+    </Router>
   );
 }
 
