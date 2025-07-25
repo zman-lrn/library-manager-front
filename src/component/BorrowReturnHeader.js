@@ -15,7 +15,7 @@ export default function BorrowReturnHeader({
       </div>
       <div className="flex space-x-2">
         <button
-          className="inline-flex items-center justify-center gap-2 py-2 px-2 bg-gray-950 text-gray-100"
+          className="inline-flex items-center justify-center gap-2 py-2 px-2 bg-gray-950 text-gray-100 rounded-md"
           onClick={() => {
             setShowBorrowModal(true);
           }}
@@ -25,7 +25,7 @@ export default function BorrowReturnHeader({
         </button>
 
         <button
-          className="inline-flex items-center justify-center gap-2 py-2 px-2 bg-gray-950 text-gray-100"
+          className="inline-flex items-center justify-center gap-2 py-2 px-2 bg-gray-950 text-gray-100 rounded-md"
           onClick={() => setShowReturnModal(true)}
         >
           <ArrowLeftRight className="h-4 w-4 mr-2" />

@@ -13,41 +13,44 @@ export default function BorrowReturnPage() {
   const [allBorrowed, setallBorrowed] = useState([]);
   const [err, setErr] = useState("");
 
+  const refreshBorrowRecords = async () => {
+    await fetchBorrowRecords();
+  };
+
+  const fetchBorrowRecords = async () => {
+    const token = localStorage.getItem("token");
+    const response = await allborrowsReturn(token);
+    setallBorrowed(response.data);
+
+    if (response?.data) {
+      const mapped = response.data.map((record) => {
+        let status = "ACTIVE";
+        const today = new Date();
+        const due = new Date(record.due_date);
+        const returned = record.return_date;
+
+        if (returned) {
+          status = "RETURNED";
+        } else if (due < today) {
+          status = "OVERDUE";
+        }
+
+        return {
+          id: record.id,
+          title: record.book.title,
+          member: record.member.name,
+          status,
+          borrowedDate: record.borrow_date,
+          dueDate: record.due_date,
+          returnedDate: record.return_date,
+        };
+      });
+      setBorrowRecords(mapped);
+    }
+  };
   useEffect(() => {
-    const fetchBorrowRecords = async () => {
-      const token = localStorage.getItem("token");
-      const response = await allborrowsReturn(token);
-      setallBorrowed(response.data);
-      if (response?.data) {
-        const mapped = response.data.map((record) => {
-          let status = "ACTIVE";
-          const today = new Date();
-          const due = new Date(record.due_date);
-          const returned = record.return_date;
-
-          if (returned) {
-            status = "RETURNED";
-          } else if (due < today) {
-            status = "OVERDUE";
-          }
-
-          return {
-            id: record.id,
-            title: record.book.title,
-            member: record.member.name,
-            status,
-            borrowedDate: record.borrow_date,
-            dueDate: record.due_date,
-            returnedDate: record.return_date,
-          };
-        });
-        setBorrowRecords(mapped);
-      }
-    };
-
     fetchBorrowRecords();
   }, []);
-
   const processedBorrowRecords = allBorrowed.map((item) => {
     const dueDate = new Date(item.due_date);
     const returnDate = item.return_date ? new Date(item.return_date) : null;
@@ -77,6 +80,8 @@ export default function BorrowReturnPage() {
       console.log("Response:", response.message);
 
       if (response && response.status === 201) {
+        await fetchBorrowRecords();
+        setShowReturnModal(false);
       } else {
         console.log(response.status);
 
@@ -105,6 +110,7 @@ export default function BorrowReturnPage() {
           <BorrowReturnCard
             key={index}
             data={item}
+            onSuccess={refreshBorrowRecords}
             showBorrowModal={showBorrowModal}
             setShowBorrowModal={setShowBorrowModal}
             selectedBook={selectedBook}

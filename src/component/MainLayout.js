@@ -7,7 +7,6 @@ export default function MainLayout({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Watch for token changes
   useEffect(() => {
     function onStorageChange() {
       setIsLoggedIn(!!localStorage.getItem("token"));
@@ -16,7 +15,6 @@ export default function MainLayout({ children }) {
     return () => window.removeEventListener("storage", onStorageChange);
   }, []);
 
-  // Auto-open sidebar on desktop screens
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 768) {
@@ -24,7 +22,7 @@ export default function MainLayout({ children }) {
       }
     }
 
-    handleResize(); // on initial load
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);

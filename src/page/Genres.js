@@ -13,20 +13,20 @@ export default function Genres() {
   const filteredGenres = genre.filter((genre) =>
     genre.name.toLowerCase().includes(search.toLowerCase())
   );
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    const fetchGeners = async () => {
-      const data = await gestGenre(token);
-      setGenre(data.data);
-    };
-    fetchGeners();
-  }, []);
+
   console.log(genre);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState(null);
-
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const fetchGeners = async () => {
+    const data = await gestGenre(token);
+    setGenre(data.data);
+  };
+  useEffect(() => {
+    fetchGeners();
+  }, []);
   const handleEdit = (genre) => {
     setSelectedGenre(genre);
     setShowEditModal(true);
@@ -40,6 +40,8 @@ export default function Genres() {
     setGenres((prev) => prev.filter((g) => g.id !== selectedGenre.id));
     setShowDeleteModal(false);
     setSelectedGenre(null);
+
+    fetchGeners();
   };
   return (
     <main className="flex-1 overflow-auto p-6">
@@ -65,7 +67,7 @@ export default function Genres() {
         <div className="relative">
           <Search className="absolute left-3 top-5 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <input
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base pl-10 "
+            className="flex h-10 w-[95%] rounded-md border border-input bg-background px- py-2 text-base pl-10 "
             placeholder="Search genres..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -111,11 +113,7 @@ export default function Genres() {
       <GenreModal
         show={showEditModal}
         onClose={() => setShowEditModal(false)}
-        onSuccess={(updated) => {
-          setGenres((prev) =>
-            prev.map((g) => (g.id === updated.id ? updated : g))
-          );
-        }}
+        onSuccess={() => fetchGeners()}
         editData={selectedGenre}
       />
 

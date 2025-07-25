@@ -28,9 +28,14 @@ export default function LoginForm() {
         '{"id":2,"username":"test","email":"test@test.com","role":"admin"}';
       const userObj = JSON.parse(userStr);
 
+      // ✅ Store both token and user
       localStorage.setItem("token", access_token);
-      localStorage.setItem("user", userObj.id);
+      localStorage.setItem("user", JSON.stringify(userObj));
+
+      // ✅ Trigger context login
       login(access_token);
+
+      // ✅ Redirect
       navigate("/dashboard");
     } catch (err) {
       console.error("Login Failed:", err.response?.data || err.message);

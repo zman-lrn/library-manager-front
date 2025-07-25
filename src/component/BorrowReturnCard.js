@@ -4,6 +4,7 @@ import { allbooks, allmembers, BorrowSubmit } from "../axios/axios";
 
 export default function BorrowReturnCard({
   data,
+  onSuccess,
   showBorrowModal,
   setShowBorrowModal,
   selectedBook,
@@ -22,16 +23,17 @@ export default function BorrowReturnCard({
     OVERDUE: "text-white bg-red-600",
   };
 
+  const token = localStorage.getItem("token");
+  const fetchBooks = async () => {
+    const response = await allbooks(token);
+    if (response) setBorrows(response.data);
+  };
+  const fetchmembers = async () => {
+    const data = await allmembers(token);
+    if (data) setMember(data.data);
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const fetchBooks = async () => {
-      const response = await allbooks(token);
-      if (response) setBorrows(response.data);
-    };
-    const fetchmembers = async () => {
-      const data = await allmembers(token);
-      if (data) setMember(data.data);
-    };
     fetchBooks();
     fetchmembers();
   }, []);
@@ -44,7 +46,6 @@ export default function BorrowReturnCard({
       setErr("Please fill out all fields.");
       return;
     }
-
     const borrowDate = today;
 
     try {
@@ -56,8 +57,11 @@ export default function BorrowReturnCard({
       };
 
       const response = await BorrowSubmit(payload, token);
-
-      console.log("Borrow record created:", response.data);
+      if (response) {
+        onSuccess();
+      }
+      await fetchBooks();
+      await fetchmembers();
       setShowBorrowModal(false);
       setSelectedBook("");
       setSelectedMember("");
@@ -189,7 +193,7 @@ export default function BorrowReturnCard({
                 </label>
                 <input
                   type="date"
-                  className="w-full border rounded px-3 py-2 mt-1 text-sm"
+                  className="w-full border rounded px-1 py-2 mt-1 text-sm"
                   value={dueDates}
                   onChange={(e) => setDueDate(e.target.value)}
                 />

@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import MainLayout from "./component/MainLayout";
 import AdminDashboard from "./page/AdminDashboard";
 import Login from "./page/Login";
@@ -18,6 +23,7 @@ function App() {
     <Router>
       <MainLayout>
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route

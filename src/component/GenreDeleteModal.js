@@ -1,4 +1,3 @@
-// GenreDeleteModal.js
 import React from "react";
 
 export default function GenreDeleteModal({ show, onClose, onConfirm, genre }) {

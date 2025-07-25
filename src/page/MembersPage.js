@@ -151,8 +151,8 @@ export default function MembersPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 150)} // allows click to register before hiding
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
+            onBlur={() => setTimeout(() => setIsFocused(false), 150)}
+            className="flex h-10 w-[98%] rounded-md border border-input bg-background  py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
             placeholder="Search members by name, email, or phone..."
           />
         </div>
@@ -281,7 +281,7 @@ export default function MembersPage() {
                 <input
                   required
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newMember.name}
                   onChange={(e) =>
                     setNewMember({ ...newMember, name: e.target.value })
@@ -294,7 +294,7 @@ export default function MembersPage() {
                 </label>
                 <input
                   type="email"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newMember.email}
                   onChange={(e) =>
                     setNewMember({ ...newMember, email: e.target.value })
@@ -307,7 +307,7 @@ export default function MembersPage() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newMember.phone}
                   onChange={(e) =>
                     setNewMember({ ...newMember, phone: e.target.value })
@@ -320,7 +320,7 @@ export default function MembersPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newMember.join_date}
                   onChange={(e) =>
                     setNewMember({ ...newMember, join_date: e.target.value })
@@ -411,7 +411,7 @@ export default function MembersPage() {
             <div className="space-y-4">
               <input
                 type="text"
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-1 py-2"
                 value={newMember.name}
                 onChange={(e) =>
                   setNewMember({ ...newMember, name: e.target.value })
@@ -420,7 +420,7 @@ export default function MembersPage() {
               />
               <input
                 type="email"
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-1 py-2"
                 value={newMember.email}
                 onChange={(e) =>
                   setNewMember({ ...newMember, email: e.target.value })
@@ -429,7 +429,7 @@ export default function MembersPage() {
               />
               <input
                 type="number"
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-1 py-2"
                 value={newMember.phone}
                 onChange={(e) =>
                   setNewMember({ ...newMember, phone: e.target.value })

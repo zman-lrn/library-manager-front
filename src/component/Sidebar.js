@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   }
                 }}
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 p-2 rounded-md transition ${
+                  `flex items-center space-x-3 p-2 rounded-md transition no-underline ${
                     isActive
                       ? "bg-blue-100 text-gray-900 font-semibold"
                       : "text-gray-700 hover:bg-gray-100"

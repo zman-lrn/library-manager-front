@@ -169,75 +169,76 @@ export default function Books() {
           Add Book
         </button>
       </div>
-
-      {books.map((book, index) => (
-        <div
-          key={index}
-          className="rounded-lg border bg-white shadow-sm hover:shadow-md transition-shadow"
-        >
-          <div className="flex flex-col space-y-1.5 p-6">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <div className="text-lg font-semibold text-gray-900">
-                  {book.title}
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-between items-start">
+        {books.map((book, index) => (
+          <div
+            key={index}
+            className="w-full sm:max-w-md md:max-w-sm lg:max-w-md xl:max-w-lg mx-auto rounded-lg border mb-3 bg-white shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex flex-col space-y-1.5 p-6">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="text-lg font-semibold text-gray-900">
+                    {book.title}
+                  </div>
+                  <div className="text-sm text-gray-500">by {book.author}</div>
                 </div>
-                <div className="text-sm text-gray-500">by {book.author}</div>
+                <div
+                  className={`text-xs font-semibold text-white px-2.5 py-0.5 rounded-full ${
+                    book.status === "Available" ? "bg-gray-950" : "bg-red-500"
+                  }`}
+                >
+                  {book.status}
+                </div>
               </div>
-              <div
-                className={`text-xs font-semibold text-white px-2.5 py-0.5 rounded-full ${
-                  book.status === "Available" ? "bg-gray-950" : "bg-red-500"
-                }`}
-              >
-                {book.status}
+            </div>
+
+            <div className="p-6 pt-0">
+              <div className="space-y-2 text-sm text-gray-600">
+                <p>
+                  <span className="font-medium">Genre:</span> {book.genre?.name}
+                </p>
+                <p>
+                  <span className="font-medium">Published:</span>{" "}
+                  {book.published_year}
+                </p>
+                <p>
+                  <span className="font-medium">Available Copies:</span>{" "}
+                  {book.available_copies}
+                </p>
+              </div>
+
+              <div className="flex justify-end space-x-2 mt-4">
+                <button
+                  className="action-button"
+                  onClick={() => {
+                    setSelectedBook(book);
+                    setShowModal(true);
+                  }}
+                >
+                  <Eye className="h-4 w-4" />
+                </button>
+                <button
+                  className="action-button"
+                  onClick={() => {
+                    setEditBookIndex(index);
+                    setEditBook(book);
+                    setShowEditModal(true);
+                  }}
+                >
+                  <SquarePen className="h-4 w-4" />
+                </button>
+                <button
+                  className="action-button"
+                  onClick={() => handleDeleteClick(book)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
             </div>
           </div>
-
-          <div className="p-6 pt-0">
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>
-                <span className="font-medium">Genre:</span> {book.genre?.name}
-              </p>
-              <p>
-                <span className="font-medium">Published:</span>{" "}
-                {book.published_year}
-              </p>
-              <p>
-                <span className="font-medium">Available Copies:</span>{" "}
-                {book.available_copies}
-              </p>
-            </div>
-
-            <div className="flex justify-end space-x-2 mt-4">
-              <button
-                className="action-button"
-                onClick={() => {
-                  setSelectedBook(book);
-                  setShowModal(true);
-                }}
-              >
-                <Eye className="h-4 w-4" />
-              </button>
-              <button
-                className="action-button"
-                onClick={() => {
-                  setEditBookIndex(index);
-                  setEditBook(book);
-                  setShowEditModal(true);
-                }}
-              >
-                <SquarePen className="h-4 w-4" />
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleDeleteClick(book)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
       {showModal && selectedBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
@@ -331,7 +332,7 @@ export default function Books() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newBook.title}
                   onChange={(e) =>
                     setNewBook({ ...newBook, title: e.target.value })
@@ -344,7 +345,7 @@ export default function Books() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newBook.author}
                   onChange={(e) =>
                     setNewBook({ ...newBook, author: e.target.value })
@@ -357,7 +358,7 @@ export default function Books() {
                 </label>
                 <input
                   type="number"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newBook.published_year}
                   onChange={(e) =>
                     setNewBook({ ...newBook, published_year: e.target.value })
@@ -370,7 +371,7 @@ export default function Books() {
                 </label>
                 <input
                   type="number"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newBook.available_copies}
                   onChange={(e) =>
                     setNewBook({ ...newBook, available_copies: e.target.value })
@@ -382,7 +383,7 @@ export default function Books() {
                   Genre
                 </label>
                 <select
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={newBook.genre_id}
                   onChange={(e) =>
                     setNewBook({ ...newBook, genre_id: e.target.value })
@@ -439,7 +440,7 @@ export default function Books() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={editBook.title}
                   onChange={(e) =>
                     setEditBook({ ...editBook, title: e.target.value })
@@ -452,7 +453,7 @@ export default function Books() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={editBook.author}
                   onChange={(e) =>
                     setEditBook({ ...editBook, author: e.target.value })
@@ -465,7 +466,7 @@ export default function Books() {
                 </label>
                 <input
                   type="number"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={editBook.published_year}
                   onChange={(e) =>
                     setEditBook({ ...editBook, published_year: e.target.value })
@@ -478,7 +479,7 @@ export default function Books() {
                 </label>
                 <input
                   type="number"
-                  className="w-full border rounded px-3 py-2 mt-1"
+                  className="w-full border rounded px-1 py-2 mt-1"
                   value={editBook.available_copies}
                   onChange={(e) =>
                     setEditBook({
