@@ -136,7 +136,6 @@ export default function Books() {
       const response = await deleteBooks(bookToDelete.id, token);
 
       if (response.status === 200) {
-        // Update local book state
         setBooks(books.filter((b) => b.id !== bookToDelete.id));
         setShowDeleteModal(false);
         setBookToDelete(null);

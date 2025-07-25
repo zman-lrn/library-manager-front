@@ -37,7 +37,7 @@ export default function GenreModal({
       }
 
       if (response && (response.status === 200 || response.status === 201)) {
-        onSuccess(response.data); // ✅ call parent to update UI
+        onSuccess(response.data);
         onClose();
         setGenre({ name: "" });
       }

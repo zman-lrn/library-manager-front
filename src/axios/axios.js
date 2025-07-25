@@ -433,3 +433,51 @@ export async function SignupAPI(credentials, token = null) {
     return null;
   }
 }
+export async function getStaff(token) {
+  try {
+    const response = await axios.get("/auth/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return null;
+  }
+}
+export async function updateStaff(id, updatedData, token) {
+  try {
+    const response = await axios.patch(`/staff/${id}`, updatedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Update success:", response.data);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      return error.response.data;
+    } else if (error.request) {
+      console.error("No response received:", error.request);
+    } else {
+      console.error("Error:", error.message);
+    }
+    return null;
+  }
+}
+export async function deleteStaff(id, token) {
+  try {
+    const response = await axios.delete(`/staff/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

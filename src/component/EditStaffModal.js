@@ -1,105 +1,85 @@
-import React, { useState } from "react";
-
-export default function EditStaffModal({ staff, onClose, onSubmit }) {
-  const [formData, setFormData] = useState({ ...staff });
+const EditStaffModal = ({ staff, onClose, onSave }) => {
+  const [formData, setFormData] = useState({
+    username: staff.username,
+    email: staff.email,
+    phone: staff.phone,
+    role: staff.role,
+  });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleSubmit = () => {
+    onSave(staff.id, formData);
+    onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Edit Staff Member</h2>
+          <h2 className="text-xl font-semibold text-gray-950">Edit Staff</h2>
           <button
-            className="text-gray-600 hover:text-red-500"
+            className="text-gray-600 hover:text-red-500 text-2xl"
             onClick={onClose}
           >
             &times;
           </button>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4 text-sm text-gray-700">
           <div>
-            <label className="block text-sm font-medium">Username</label>
+            <label className="block font-medium mb-1">Username:</label>
             <input
+              type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-              required
+              className="w-full border border-gray-300 rounded px-1 py-2"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Email</label>
+            <label className="block font-medium mb-1">Email:</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-              required
+              className="w-full border border-gray-300 rounded px-1 py-2"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Phone</label>
+            <label className="block font-medium mb-1">Phone:</label>
             <input
+              type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded px-1 py-2"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Role</label>
+            <label className="block font-medium mb-1">Role:</label>
             <select
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-              required
+              className="w-full border border-gray-300 rounded px-3 py-2"
             >
               <option value="admin">Admin</option>
               <option value="librarian">Librarian</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium">Status</label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="ACTIVE">ACTIVE</option>
-              <option value="INACTIVE">INACTIVE</option>
-            </select>
-          </div>
-
-          <div className="flex justify-end gap-2 mt-6">
-            <button
-              type="button"
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-gray-950 text-white rounded"
-            >
-              Save Changes
-            </button>
-          </div>
-        </form>
+        </div>
+        <div className="flex justify-end mt-6">
+          <button
+            className="px-4 py-2 bg-gray-950 text-white rounded"
+            onClick={handleSubmit}
+          >
+            Save Changes
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};

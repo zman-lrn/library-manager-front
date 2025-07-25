@@ -8,7 +8,7 @@ import {
 import MainLayout from "./component/MainLayout";
 import AdminDashboard from "./page/AdminDashboard";
 import Login from "./page/Login";
-import Books from "./component/books";
+import Books from "./page/BookPage";
 import BorrowReturnPage from "./page/BorrowReturnPage";
 import MembersPage from "./page/MembersPage";
 import StaffPage from "./page/StaffPage";

@@ -30,6 +30,7 @@ export default function LoginForm() {
 
       localStorage.setItem("token", access_token);
       localStorage.setItem("user", JSON.stringify(userObj));
+      console.log(access_token);
 
       login(access_token);
 
