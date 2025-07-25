@@ -75,7 +75,6 @@ export default function MembersPage() {
     }
   };
   const editMember = async () => {
-    // Trim inputs before validation
     if (
       !newMember.name.trim() ||
       !newMember.email.trim() ||
@@ -166,7 +165,7 @@ export default function MembersPage() {
                     setSelectedMember(member);
                     setShowViewModal(true);
                     setIsFocused(false);
-                    setSearchTerm(""); // optional: clear after selection
+                    setSearchTerm("");
                   }}
                   className="cursor-pointer hover:bg-gray-100 p-2 rounded"
                 >

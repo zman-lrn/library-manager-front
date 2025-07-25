@@ -148,7 +148,7 @@ export default function Report() {
           <StatCard
             title="Total Borrows This Month"
             value={totalborrwed.totalBorrowsThisMonth}
-            change="+12%" // you can calculate this if needed
+            change="+12%"
             icon={<Book />}
           />
           <StatCard
