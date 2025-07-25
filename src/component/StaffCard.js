@@ -2,10 +2,11 @@ import React from "react";
 import { Shield, User, Eye, SquarePen, Trash2 } from "lucide-react";
 
 export default function StaffCard({ staff, onView, onEdit, onDelete }) {
-  const isAdmin = staff.role.toLowerCase() === "admin";
+  // const isAdmin = staff.role.toLowerCase() === "admin";
+  const isAdmin = staff.role === "admin";
 
   return (
-    <div className="rounded-lg border bg-card text-card-foreground shadow-lg hover:shadow-md transition-shadow">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-lg hover:shadow-md transition-shadow mt-6">
       <div className="flex flex-col space-y-1.5 p-6">
         <div className="flex justify-between items-start">
           <div className="flex-1">
@@ -29,7 +30,8 @@ export default function StaffCard({ staff, onView, onEdit, onDelete }) {
                   : "bg-primary text-gray-700"
               }`}
             >
-              {staff.role.toUpperCase()}
+              {/* {staff.role.toUpperCase()} */}
+              {staff.role}
             </div>
             <div
               className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
