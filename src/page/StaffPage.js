@@ -195,7 +195,6 @@ export default function StaffPage() {
           {showViewModal && selectedStaff && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-                {/* Header */}
                 <button
                   className="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-xl"
                   onClick={() => setShowViewModal(false)}
@@ -209,7 +208,6 @@ export default function StaffPage() {
                   Staff Member Details
                 </p>
 
-                {/* Info */}
                 <div className="space-y-3 text-gray-800 text-sm">
                   <div className="flex items-center gap-2">
                     <span className="font-medium w-24">Username:</span>

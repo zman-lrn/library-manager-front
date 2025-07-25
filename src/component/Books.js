@@ -168,11 +168,11 @@ export default function Books() {
           Add Book
         </button>
       </div>
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-between items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {books.map((book, index) => (
           <div
             key={index}
-            className="w-full sm:max-w-md md:max-w-sm lg:max-w-md xl:max-w-lg mx-auto rounded-lg border mb-3 bg-white shadow-sm hover:shadow-md transition-shadow"
+            className="w-full sm:max-w-md md:max-w-sm lg:max-w-md xl:max-w-2xl mx-auto rounded-lg border mb-3 bg-white shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex flex-col space-y-1.5 p-6">
               <div className="flex justify-between items-start">
