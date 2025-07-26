@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { AlertTriangle, TrendingUp, Book, Timer, Repeat } from "lucide-react";
 import { overdue, popularGenres, totalBorrows } from "../axios/axios";
 
@@ -15,6 +16,7 @@ export default function Report() {
 
         if (response && response.status === 200) {
           setOverdueBooks(response.data);
+          toast.success("Overdue books are loaded successfully!");
         } else {
           console.error("Failed to fetch overdue books");
         }
@@ -29,6 +31,7 @@ export default function Report() {
 
         if (response && response.status === 200) {
           setPopularGenres(response.data);
+          toast.success("Popular  books are loaded successfully!");
         } else {
           console.error("Failed to fetch overdue books");
         }
@@ -171,7 +174,7 @@ export default function Report() {
 
 function StatCard({ title, value, change, icon }) {
   return (
-    <div className="rounded-lg border bg-card text-card-foreground shadow-lg">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-lg mt-4">
       <div className="p-6 flex justify-between items-center pb-2">
         <div className="text-sm font-medium tracking-tight text-gray-950">
           {title}

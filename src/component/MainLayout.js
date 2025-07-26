@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { ToastContainer } from "react-toastify";
 import { Menu } from "lucide-react";
 
 export default function MainLayout({ children }) {
@@ -8,17 +9,20 @@ export default function MainLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    function onStorageChange() {
-      setIsLoggedIn(!!localStorage.getItem("token"));
-    }
-    window.addEventListener("storage", onStorageChange);
-    return () => window.removeEventListener("storage", onStorageChange);
+    const interval = setInterval(() => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    }, 500);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 768) {
         setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
       }
     }
 
@@ -43,7 +47,7 @@ export default function MainLayout({ children }) {
             <Menu className="w-3 h-3" />
           </button>
         )}
-
+        <ToastContainer position="bottom-right" autoClose={3000} />
         <main className="p-6 mt-2">
           {isLoggedIn && <Header />}
           {children}

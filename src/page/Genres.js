@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { Pencil, Trash2, Plus, Search } from "lucide-react";
 import GenreAddModal from "../component/GenreAddModal";
 import GenreModal from "../component/GenreAddModal";
 import GenreDeleteModal from "../component/GenreDeleteModal";
 import { gestGenre, deleteGenreById } from "../axios/axios";
+import useUserStore from "../utilits/userStore";
 
 export default function Genres() {
+  const { role } = useUserStore();
+
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [genres, setGenres] = useState([]);
@@ -14,7 +18,6 @@ export default function Genres() {
     genre.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  console.log(genre);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState(null);
@@ -22,7 +25,10 @@ export default function Genres() {
   console.log(token);
   const fetchGeners = async () => {
     const data = await gestGenre(token);
-    setGenre(data.data);
+    if (data) {
+      setGenre(data.data);
+      toast.success("Genre loaded successfully!");
+    }
   };
   useEffect(() => {
     fetchGeners();
@@ -30,6 +36,7 @@ export default function Genres() {
   const handleEdit = (genre) => {
     setSelectedGenre(genre);
     setShowEditModal(true);
+    toast.success("Genre updated successfully!");
   };
 
   const handleDelete = async () => {
@@ -40,9 +47,17 @@ export default function Genres() {
     setGenres((prev) => prev.filter((g) => g.id !== selectedGenre.id));
     setShowDeleteModal(false);
     setSelectedGenre(null);
-
+    toast.success("Genre deleted successfully!");
     fetchGeners();
   };
+  if (role !== "admin") {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <h6 className="text-lg font-semibold text-gray-700">For admins only</h6>
+      </div>
+    );
+  }
+
   return (
     <main className="flex-1 overflow-auto p-6">
       <div className="space-y-6">

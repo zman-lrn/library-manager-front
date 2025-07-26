@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Eye, SquarePen, Trash2, LogIn } from "lucide-react";
+import { toast } from "react-toastify";
+import { Plus, Eye, SquarePen, Trash2, Search } from "lucide-react";
 import { addBook } from "../axios/axios";
 import { allbooks } from "../axios/axios";
 import { editBooks } from "../axios/axios";
@@ -11,7 +12,10 @@ export default function Books() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
-
+  const [books, setBooks] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editBookIndex, setEditBookIndex] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [err, setErr] = useState("");
   const [newBook, setNewBook] = useState({
     title: "",
@@ -20,9 +24,7 @@ export default function Books() {
     available_copies: "",
     genre_id: "",
   });
-  const [books, setBooks] = useState([]);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editBookIndex, setEditBookIndex] = useState(null);
+
   const [editBook, setEditBook] = useState({
     title: "",
     author: "",
@@ -43,6 +45,8 @@ export default function Books() {
         }));
 
         setBooks(booksWithStatus);
+
+        toast.success("Books loaded successfully!");
       }
     };
     fetchBooks();
@@ -75,6 +79,7 @@ export default function Books() {
           available_copies: "",
           genre_id: "",
         });
+        toast.success("Book add successfully!");
       } else {
         setErr(response.message[0]);
       }
@@ -110,6 +115,7 @@ export default function Books() {
         setBooks(updatedBooks);
         setShowEditModal(false);
         setErr("");
+        toast.success("Book updated successfully!");
       } else {
         console.error("Failed to update book.");
         setErr(response?.message);
@@ -140,6 +146,7 @@ export default function Books() {
         setShowDeleteModal(false);
         setBookToDelete(null);
         setErr("");
+        toast.success("Book deleted successfully!");
       } else {
         setErr("Failed to delete the book.");
       }
@@ -152,6 +159,14 @@ export default function Books() {
       console.error("Delete failed:", error);
     }
   };
+  const filteredBooks = books.filter((book) => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return (
+      book.title.toLowerCase().includes(lowerSearch) ||
+      book.author.toLowerCase().includes(lowerSearch) ||
+      (book.genre?.name?.toLowerCase().includes(lowerSearch) ?? false)
+    );
+  });
 
   return (
     <div className="space-y-6">
@@ -168,8 +183,19 @@ export default function Books() {
           Add Book
         </button>
       </div>
+      <div className="relative">
+        <Search className="absolute left-3 top-5 transform text-gray-400 h-5 w-5 pointer-events-none" />
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="flex h-10 w-[98%] rounded-md border border-input bg-background py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
+          placeholder="Search books by title, author, or genre..."
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {books.map((book, index) => (
+        {filteredBooks.map((book, index) => (
           <div
             key={index}
             className="w-full sm:max-w-md md:max-w-sm lg:max-w-md xl:max-w-2xl mx-auto rounded-lg border mb-3 bg-white shadow-sm hover:shadow-md transition-shadow"

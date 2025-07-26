@@ -3,8 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../axios/axios";
 import { BookOpen } from "lucide-react";
 import { AuthContext } from "./AuthContext";
-
+import useUserStore from "../utilits/userStore";
 export default function LoginForm() {
+  const { setUser } = useUserStore.getState();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -21,8 +22,10 @@ export default function LoginForm() {
 
     try {
       const response = await loginUser(form);
-      console.log("login", response);
-
+      console.log("login", response.data.user.role);
+      const role = response.data.user.role;
+      const username = response.data.user.username;
+      setUser({ username, role });
       const { access_token } = response.data;
       const userStr =
         '{"id":2,"username":"test","email":"test@test.com","role":"admin"}';

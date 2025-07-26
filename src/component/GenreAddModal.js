@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { addGenre, updateGenre } from "../axios/axios";
 
 export default function GenreModal({
@@ -32,13 +33,16 @@ export default function GenreModal({
 
       if (editData) {
         response = await updateGenre(editData.id, { name: trimmedName }, token);
+        toast.success("Genre updated successfully!");
       } else {
         response = await addGenre({ name: trimmedName }, token);
+        toast.success("Genre added successfully!");
       }
 
       if (response && (response.status === 200 || response.status === 201)) {
         onSuccess(response.data);
         onClose();
+
         setGenre({ name: "" });
       }
     } catch (error) {

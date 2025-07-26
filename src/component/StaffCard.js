@@ -1,10 +1,18 @@
 import React from "react";
 import { Shield, User, Eye, SquarePen, Trash2 } from "lucide-react";
-
+import useUserStore from "../utilits/userStore";
 export default function StaffCard({ staff, onView, onEdit, onDelete }) {
+  const { role } = useUserStore();
+
   // const isAdmin = staff.role.toLowerCase() === "admin";
   const isAdmin = staff.role === "admin";
-
+  if (role !== "admin") {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <h6 className="text-lg font-semibold text-gray-700">For admins only</h6>
+      </div>
+    );
+  }
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-lg hover:shadow-md transition-shadow mt-6">
       <div className="flex flex-col space-y-1.5 p-6">

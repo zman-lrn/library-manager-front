@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   Shield,
   BookOpen,
@@ -8,7 +9,7 @@ import {
   ChartColumn,
   Import,
 } from "lucide-react";
-import Header from "./Header";
+
 import RecentActivity from "./RecentActivity";
 import { allbooks } from "../axios/axios";
 import { allmembers } from "../axios/axios";
@@ -50,7 +51,10 @@ function StatsCard() {
 
     const fetchBooks = async () => {
       const data = await allbooks(token);
-      if (data) setBooks(data.data);
+      if (data) {
+        setBooks(data.data);
+        toast.success("Books loaded successfully!");
+      }
     };
 
     const fetchmembers = async () => {
@@ -76,7 +80,7 @@ function StatsCard() {
   }, []);
   // console.log(books.length);
   // console.log(member);
-  console.log(borrows);
+  // console.log(borrows);
   // console.log(overdueBorrow.length);
   const stats = [
     { label: "Total Books", value: books?.length || 0 },

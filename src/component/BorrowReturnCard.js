@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { BookOpen, User, Calendar } from "lucide-react";
 import { allbooks, allmembers, BorrowSubmit } from "../axios/axios";
 
@@ -30,7 +31,13 @@ export default function BorrowReturnCard({
   };
   const fetchmembers = async () => {
     const data = await allmembers(token);
-    if (data) setMember(data.data);
+
+    if (data) {
+      setMember(data.data);
+      toast.success("Borrow and return data loaded successfully!", {
+        toastId: "borrow-success",
+      });
+    }
   };
 
   useEffect(() => {
@@ -59,6 +66,7 @@ export default function BorrowReturnCard({
       const response = await BorrowSubmit(payload, token);
       if (response) {
         onSuccess();
+        toast.success("Book borrowed successfully!");
       }
       await fetchBooks();
       await fetchmembers();

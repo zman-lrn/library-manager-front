@@ -76,9 +76,13 @@ export default function StaffPage() {
     <main className="flex-1 overflow-auto p-6">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div className="text-3xl font-bold text-gray-900">
-            Staff Management
+          <div className="font-bold text-gray-900">
+            <h3>Staff Management</h3>
+            <p className="text-gray-500">
+              Manage library staff and administrators (Admin Only)
+            </p>
           </div>
+
           <button
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-gray-950 text-gray-300 px-4 py-2"
             onClick={() => setShowAddModal(true)}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import BorrowReturnHeader from "../component/BorrowReturnHeader";
 import BorrowReturnCard from "../component/BorrowReturnCard";
 import { allborrowsReturn, ReturnBorrowedBook } from "../axios/axios";
@@ -20,7 +21,9 @@ export default function BorrowReturnPage() {
   const fetchBorrowRecords = async () => {
     const token = localStorage.getItem("token");
     const response = await allborrowsReturn(token);
-    setallBorrowed(response.data);
+    if (response) {
+      setallBorrowed(response.data);
+    }
 
     if (response?.data) {
       const mapped = response.data.map((record) => {
@@ -80,6 +83,7 @@ export default function BorrowReturnPage() {
       console.log("Response:", response.message);
 
       if (response && response.status === 201) {
+        toast.success("Book returned successfully!");
         await fetchBorrowRecords();
         setShowReturnModal(false);
       } else {

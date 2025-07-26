@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import {
   allmembers,
   editMembers,
@@ -31,7 +32,10 @@ export default function MembersPage() {
 
     const fetchmembers = async () => {
       const data = await allmembers(token);
-      if (data) setMembers(data.data);
+      if (data) {
+        toast.success("Members are loaded successfully!");
+        setMembers(data.data);
+      }
     };
 
     fetchmembers();
@@ -68,6 +72,7 @@ export default function MembersPage() {
           phone: "",
         });
         setErr("");
+        toast.success("Member are added successfully!");
       }
       setErr(response.message[0] || "Failed to add member");
     } catch (error) {
@@ -101,6 +106,7 @@ export default function MembersPage() {
         setShowEditModal(false);
         setSelectedMember(null);
         setErr("");
+        toast.success("Members are updated successfully!");
       } else {
         setErr(response.message || "Failed to update member.");
       }
@@ -118,6 +124,7 @@ export default function MembersPage() {
         setShowDeleteModal(false);
         setSelectedMember(null);
         setErr("");
+        toast.success("Members are deleted successfully!");
       } else {
         setErr(response.message || "Failed to delete member.");
       }

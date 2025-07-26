@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -14,17 +15,25 @@ axios.interceptors.request.use(
 );
 
 axios.interceptors.response.use(
-  function (response) {
-    const status = response.status;
-    return response;
-  },
-  function (error) {
+  (response) => response,
+  (error) => {
     const status = error.response?.status;
+
+    if (status === 401) {
+      toast.error("Unauthorized. Please log in again.");
+    } else if (status === 403) {
+      toast.error("Access denied.");
+    } else if (status === 404) {
+      toast.error("Resource not found.");
+    } else if (status === 500) {
+      toast.error("Server error. Please try again later.");
+    } else {
+      toast.error("Something went wrong.");
+    }
 
     return Promise.reject(error);
   }
 );
-
 export async function loginUser(credentials) {
   try {
     const response = await axios.post("/auth/login", credentials);

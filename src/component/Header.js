@@ -2,7 +2,10 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { LogOut, User } from "lucide-react";
+import useUserStore from "../utilits/userStore";
+
 export default function Header() {
+  const { username, clearUser } = useUserStore();
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -10,6 +13,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    clearUser();
     setDropdownOpen(false);
     navigate("/login");
   };
@@ -29,7 +33,9 @@ export default function Header() {
       <div className="flex items-center justify-between">
         <div className="flex-1"></div>
         <div className="flex items-center space-x-4 relative" ref={dropdownRef}>
-          <span className="text-sm text-gray-600">Welcome, admin</span>
+          <span className="text-sm text-gray-600">
+            Welcome, {username || "User"}
+          </span>
 
           <button
             onClick={() => setDropdownOpen((open) => !open)}
