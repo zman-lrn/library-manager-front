@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import BorrowReturnHeader from "../component/BorrowReturnHeader";
 import BorrowReturnCard from "../component/BorrowReturnCard";
+import BorrowBookModal from "../component/BorrowBookModal";
 import { allborrowsReturn, ReturnBorrowedBook } from "../axios/axios";
 
 export default function BorrowReturnPage() {
@@ -135,7 +136,16 @@ export default function BorrowReturnPage() {
           />
         ))}
       </div>
-
+      {showBorrowModal && (
+        <BorrowBookModal
+          onClose={() => setShowBorrowModal(false)}
+          onSuccess={refreshBorrowRecords}
+          selectedBook={selectedBook}
+          selectedMember={selectedMember}
+          setSelectedBook={setSelectedBook}
+          setSelectedMember={setSelectedMember}
+        />
+      )}
       {showReturnModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
