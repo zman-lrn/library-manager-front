@@ -17,6 +17,7 @@ export default function BorrowReturnHeader({
         <button
           className="inline-flex items-center justify-center gap-2 py-2 px-2 bg-gray-950 text-gray-100 rounded-md"
           onClick={() => {
+            console.log("clicked");
             setShowBorrowModal(true);
           }}
         >
