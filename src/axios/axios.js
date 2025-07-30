@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.withCredentials = false;
 
 axios.interceptors.request.use(
   function (req) {
@@ -263,7 +264,18 @@ export async function deleteMembers(id, token) {
     throw error;
   }
 }
-
+export async function activeBorrow(id, token) {
+  try {
+    const response = await axios.get(`/members/${id}/borrowing-history`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
 export async function apiAddStaff(credentials, token) {
   try {
     const response = await axios.post("/staff", credentials, {

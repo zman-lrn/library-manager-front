@@ -13,9 +13,14 @@ export default function Report() {
       const token = localStorage.getItem("token");
       try {
         const response = await overdue(token);
+        console.log(response.data);
 
         if (response && response.status === 200) {
-          setOverdueBooks(response.data);
+          const overdueUnreturned = response.data.filter(
+            (item) => item.return_date === null
+          );
+
+          setOverdueBooks(overdueUnreturned);
           toast.success("Overdue books are loaded successfully!");
         } else {
           console.error("Failed to fetch overdue books");
@@ -24,6 +29,7 @@ export default function Report() {
         console.error("Error fetching overdue books:", error);
       }
     };
+
     const fetchpopularGenres = async () => {
       const token = localStorage.getItem("token");
       try {

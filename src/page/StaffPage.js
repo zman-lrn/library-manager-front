@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import StaffCard from "../component/StaffCard";
-
+import useUserStore from "../utilits/userStore";
 const initialFakeStaff = [
   {
     id: 1,
@@ -24,6 +24,7 @@ const initialFakeStaff = [
 ];
 
 export default function StaffPage() {
+  const { role } = useUserStore();
   const [staffList, setStaffList] = useState(initialFakeStaff);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewStaff, setViewStaff] = useState(null);
@@ -82,14 +83,17 @@ export default function StaffPage() {
               Manage library staff and administrators (Admin Only)
             </p>
           </div>
-
-          <button
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-gray-950 text-gray-300 px-4 py-2"
-            onClick={() => setShowAddModal(true)}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Staff
-          </button>
+          {role == "admin" ? (
+            <button
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-gray-950 text-gray-300 px-4 py-2"
+              onClick={() => setShowAddModal(true)}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add Staff
+            </button>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="relative">

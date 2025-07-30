@@ -80,7 +80,7 @@ export default function Signup() {
               placeholder="Username"
               value={form.username}
               onChange={handleChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-1 py-2"
+              className="flex h-10 w-[96%] rounded-md border border-input bg-background px-3 py-2"
               autoComplete="off"
               required
             />
@@ -96,7 +96,7 @@ export default function Signup() {
               placeholder="Email"
               value={form.email}
               onChange={handleChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-1 py-2"
+              className="flex h-10 w-[96%] rounded-md border border-input bg-background px-3 py-2"
               required
             />
           </div>
@@ -114,7 +114,7 @@ export default function Signup() {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-1 py-2"
+              className="flex h-10 w-[96%] rounded-md border border-input bg-background px-3 py-2"
               required
             />
           </div>

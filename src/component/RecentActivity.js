@@ -16,7 +16,13 @@ export default function RecentActivity() {
 
     fetchAllBorrows();
   }, []);
-
+  const sortedRecent = [...borrows]
+    .sort((a, b) => {
+      const aDate = new Date(a.return_date || a.borrow_date);
+      const bDate = new Date(b.return_date || b.borrow_date);
+      return bDate - aDate;
+    })
+    .slice(0, 5);
   return (
     <div className="rounded-lg border bg-white text-card-foreground shadow-sm">
       <div className="flex flex-col space-y-1.5 p-6">
@@ -30,7 +36,7 @@ export default function RecentActivity() {
 
       <div className="p-6 pt-0">
         <div className="space-y-4">
-          {(borrows || []).map((item, index) => {
+          {sortedRecent.map((item, index) => {
             const isReturned = item.return_date !== null;
             const type = isReturned ? "returned" : "borrowed";
             const date = isReturned ? item.return_date : item.borrow_date;

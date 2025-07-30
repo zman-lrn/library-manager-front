@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Plus, Eye, SquarePen, Trash2, Search } from "lucide-react";
-import { addBook } from "../axios/axios";
-import { allbooks } from "../axios/axios";
-import { editBooks } from "../axios/axios";
-import { deleteBooks } from "../axios/axios";
+
+import {
+  deleteBooks,
+  gestGenre,
+  editBooks,
+  allbooks,
+  addBook,
+} from "../axios/axios";
 
 export default function Books() {
   const [selectedBook, setSelectedBook] = useState(null);
@@ -32,6 +36,7 @@ export default function Books() {
     available_copies: "",
     genre_id: "",
   });
+  const [genres, setGenres] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -39,7 +44,7 @@ export default function Books() {
     const fetchBooks = async () => {
       const data = await allbooks(token);
       if (data) {
-        const booksWithStatus = data.data.map((book) => ({
+        const booksWithStatus = data?.data.map((book) => ({
           ...book,
           status: book.available_copies > 0 ? "Available" : "Out of Stock",
         }));
@@ -49,6 +54,15 @@ export default function Books() {
         toast.success("Books loaded successfully!");
       }
     };
+    const fetchGenre = async () => {
+      const data = await gestGenre(token);
+      if (data?.data) {
+        console.log("g", data.data);
+
+        setGenres(data.data);
+      }
+    };
+    fetchGenre();
     fetchBooks();
   }, []);
   const submitBook = async () => {
@@ -415,11 +429,11 @@ export default function Books() {
                   }
                 >
                   <option value="">Select Genre</option>
-                  <option value="2">Fiction</option>
-                  <option value="4">Adventure</option>
-                  <option value="5">Romance</option>
-                  <option value="7">Fantasy</option>
-                  <option value="9">Biography</option>
+                  {genres.map((genre) => (
+                    <option key={genre.id} value={genre.id}>
+                      {genre.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

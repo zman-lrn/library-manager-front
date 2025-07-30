@@ -46,35 +46,54 @@ export default function BorrowReturnCard({
   }, []);
 
   const today = new Date().toISOString().split("T")[0];
-  const [dueDates, setDueDate] = useState("");
+
+  const [rentDate, setRentDate] = useState(() => {
+    return today;
+  });
+
+  const [dueDateb, setDueDate] = useState(() => {
+    const due = new Date();
+    due.setDate(due.getDate() + 10);
+    return due.toISOString().split("T")[0];
+  });
 
   const handleBorrowSubmit = async () => {
-    if (!selectedBook || !selectedMember || !dueDate) {
+    if (!selectedBook || !selectedMember || !dueDateb || !rentDate) {
       setErr("Please fill out all fields.");
       return;
     }
-    const borrowDate = today;
 
     try {
       const token = localStorage.getItem("token");
       const payload = {
         book_id: parseInt(selectedBook),
         member_id: parseInt(selectedMember),
-        due_date: dueDate,
+        // borrow_date: rentDate, //
+        due_date: dueDateb,
       };
 
       const response = await BorrowSubmit(payload, token);
-      if (response) {
+
+      if (response.message) {
+        console.log(response.statusCode);
+        setErr(response.message);
+      } else {
         onSuccess();
         toast.success("Book borrowed successfully!");
+
+        await fetchBooks();
+        await fetchmembers();
+        setShowBorrowModal(false);
+        setSelectedBook("");
+        setSelectedMember("");
+        setRentDate(today);
+        setDueDate(
+          new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split("T")[0]
+        );
+        setErr("");
       }
-      await fetchBooks();
-      await fetchmembers();
-      setShowBorrowModal(false);
-      setSelectedBook("");
-      setSelectedMember("");
-      setDueDate("");
-      setErr("");
     } catch (error) {
       console.error("Error submitting borrow record:", error);
       setErr("Failed to submit borrow record. Please try again.");
@@ -118,7 +137,7 @@ export default function BorrowReturnCard({
               <div>
                 <span className="font-medium">Due:</span>
                 <br />
-                {dueDates}
+                {dueDateb}
               </div>
             </div>
             {returnedDate && (
@@ -195,18 +214,40 @@ export default function BorrowReturnCard({
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Due Date
-                </label>
-                <input
-                  type="date"
-                  className="w-full border rounded px-1 py-2 mt-1 text-sm"
-                  value={dueDates}
-                  onChange={(e) => setDueDate(e.target.value)}
-                />
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Rent Date
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full border rounded px-1 py-2 mt-1 text-sm"
+                    value={rentDate}
+                    onChange={(e) => {
+                      const newRentDate = e.target.value;
+                      setRentDate(newRentDate);
+
+                      const due = new Date(newRentDate);
+                      due.setDate(due.getDate() + 10);
+                      setDueDate(due.toISOString().split("T")[0]);
+                    }}
+                  />
+                </div>
+
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Due Date
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full border rounded px-1 py-2 mt-1 text-sm"
+                    value={dueDateb}
+                    onChange={(e) => setDueDate(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
+            <div className="text-red-500 mt-1">{err}</div>
             <div className="flex justify-end gap-2 mt-6">
               <button
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded"

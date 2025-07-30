@@ -63,7 +63,8 @@ function StatsCard() {
     };
     const fetchallborrows = async () => {
       const data = await allborrows(token);
-      if (data) setBorrows(data.data);
+      const activeBorrows = data.data.filter((borrow) => !borrow.return_date);
+      setBorrows(activeBorrows);
 
       const now = new Date();
 

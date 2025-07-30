@@ -5,11 +5,12 @@ import { LogOut, User } from "lucide-react";
 import useUserStore from "../utilits/userStore";
 
 export default function Header() {
-  const { username, clearUser } = useUserStore();
+  const { username, role, clearUser } = useUserStore();
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  console.log(username, role);
 
   const handleLogout = () => {
     logout();
@@ -46,29 +47,29 @@ export default function Header() {
           >
             <span className="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
               <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                A
+                {username ? username[0].toUpperCase() : "A"}
               </span>
             </span>
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-32 w-32 rounded-md border bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
+            <div className="absolute right-0 mt-32 w-52  rounded-md border bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800"
+                className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-800 border-none"
                 type="button"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
               </button>
               <button
-                className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800"
+                className="flex items-start gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 border-none"
                 type="button"
               >
                 <Link
                   to="/profile"
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="flex items-center gap-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   <User className="w-4 h-4" />
                   Profile

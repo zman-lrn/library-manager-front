@@ -5,6 +5,7 @@ import {
   editMembers,
   addMembers,
   deleteMembers,
+  activeBorrow,
 } from "../axios/axios";
 import { Plus, Eye, History, SquarePen, Trash2, Search } from "lucide-react";
 
@@ -25,21 +26,49 @@ export default function MembersPage() {
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [activeBorrows, setactiveBorrows] = useState(false);
+  console.log(members);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
 
-    const fetchmembers = async () => {
-      const data = await allmembers(token);
-      if (data) {
-        toast.success("Members are loaded successfully!");
-        setMembers(data.data);
+    const fetchData = async () => {
+      try {
+        const memberRes = await allmembers(token);
+        const members = memberRes?.data || [];
+
+        const updatedMembers = await Promise.all(
+          members.map(async (member) => {
+            try {
+              const res = await activeBorrow(member.id, token);
+              const history = res?.data || [];
+
+              const activeCount = history.filter(
+                (borrow) => borrow.return_date === null
+              ).length;
+
+              return { ...member, activeBorrows: activeCount };
+            } catch (err) {
+              console.error(
+                `Failed to fetch borrows for member ${member.id}`,
+                err
+              );
+              return { ...member, activeBorrows: 0 };
+            }
+          })
+        );
+
+        setMembers(updatedMembers);
+        toast.success("Members with active borrows loaded!");
+      } catch (error) {
+        console.error("Error loading members or borrows", error);
+        toast.error("Failed to load members.");
       }
     };
 
-    fetchmembers();
+    fetchData();
   }, []);
+
   const filteredMembers = members.filter((member) =>
     [member.name, member.email, member.phone]
       .join(" ")
@@ -91,7 +120,9 @@ export default function MembersPage() {
 
     try {
       const token = localStorage.getItem("token");
-      const { join_date, id, ...memberWithoutJoinDate } = newMember;
+      const { join_date, id, activeBorrows, ...memberWithoutJoinDate } =
+        newMember;
+      console.log(newMember);
 
       const response = await editMembers(
         newMember.id,
@@ -219,7 +250,7 @@ export default function MembersPage() {
                   </p>
                   <p>
                     <span className="font-medium">Active Borrows:</span>{" "}
-                    {member.activeBorrows}
+                    {member.activeBorrows ?? 0}
                   </p>
                 </div>
 

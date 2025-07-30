@@ -17,25 +17,36 @@ export default function BorrowReturnPage() {
   const refreshBorrowRecords = async () => {
     await fetchBorrowRecords();
   };
-
+  function toDateOnly(date) {
+    const d = new Date(date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
   const fetchBorrowRecords = async () => {
     const token = localStorage.getItem("token");
     const response = await allborrowsReturn(token);
     if (response) {
       setallBorrowed(response.data);
     }
+    console.log(response.data);
 
     if (response?.data) {
       const mapped = response.data.map((record) => {
         let status = "ACTIVE";
+
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         const due = new Date(record.due_date);
+        due.setHours(0, 0, 0, 0);
+
         const returned = record.return_date;
 
         if (returned) {
           status = "RETURNED";
-        } else if (due < today) {
+        } else if (today > due) {
           status = "OVERDUE";
+        } else {
+          status = "ACTIVE";
         }
 
         return {

@@ -72,7 +72,7 @@ export default function LoginForm() {
               placeholder="Username"
               value={form.email}
               onChange={handleChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px- py-2"
+              className="flex h-10 w-[96%] rounded-md border border-input bg-background px-3 py-2"
               required
             />
           </div>
@@ -89,7 +89,7 @@ export default function LoginForm() {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px- py-2"
+              className="flex h-10 w-[96%] rounded-md border border-input bg-background px-3 py-2"
               required
             />
           </div>
