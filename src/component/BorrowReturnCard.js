@@ -39,7 +39,8 @@ export default function BorrowReturnCard({
       });
     }
   };
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   useEffect(() => {
     fetchBooks();
     fetchmembers();
@@ -161,8 +162,8 @@ export default function BorrowReturnCard({
           )}
         </div>
       </div>
-
-      {showBorrowModal && (
+      {console.log("Modal showBorrowModal is", showBorrowModal)}
+      {mounted && showBorrowModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <div className="flex justify-between items-center mb-4">
