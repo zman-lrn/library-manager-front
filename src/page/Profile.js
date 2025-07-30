@@ -4,18 +4,20 @@ import { getProfile } from "../axios/axios";
 
 export default function Profile() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const [profile, setProfile] = useState(null);
+  console.log(user);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      const data = await getProfile(token);
-      console.log("profile", data);
-      if (data && data.data) setProfile(data.data);
-    };
+  const [profile, setProfile] = useState(user);
 
-    fetchProfile();
-  }, []);
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     const token = localStorage.getItem("token");
+  //     const data = await getProfile(token);
+  //     console.log("profile", data);
+  //     if (data && data.data) setProfile(data.data);
+  //   };
+
+  //   fetchProfile();
+  // }, []);
 
   if (!profile) return <div>Loading profile...</div>;
   return (
