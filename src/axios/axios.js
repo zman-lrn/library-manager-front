@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://back-end-for-assessment.vercel.app";
 axios.defaults.withCredentials = false;
 
 axios.interceptors.request.use(
