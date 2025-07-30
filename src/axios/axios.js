@@ -431,12 +431,11 @@ export async function getProfile(token) {
     const response = await axios.get("/auth/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
     });
     return response;
   } catch (error) {
-    console.error("Error fetching books:", error);
+    console.error("Error fetching profile:", error);
     return null;
   }
 }
